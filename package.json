@@ -1,0 +1,29 @@
+{
+  "name": "nass-telecom",
+  "version": "1.0.0",
+  "description": "Nass-Telecom - Boutique en ligne d'appareils électroniques (ordinateurs, téléphones, tablettes, écouteurs). Full-stack Node.js + SQLite avec administration.",
+  "main": "server/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "seed": "node server/seed.js"
+  },
+  "keywords": [
+    "electronics",
+    "ecommerce",
+    "nass-telecom"
+  ],
+  "author": "Nass-Telecom",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.3.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}

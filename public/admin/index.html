@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administration — Nass-Telecom</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="page-transition" id="pageTransition" aria-hidden="true">
+    <span class="pt-logo">NASS-TELECOM</span>
+  </div>
+
+  <!-- LOGIN -->
+  <section class="login-shell" id="loginView">
+    <div class="login-card">
+      <a href="/" class="brand" data-nav style="justify-content:center;margin-bottom:22px;">
+        <span class="brand-mark"><span class="brand-orb"></span></span>
+        <span class="brand-text"><strong>Nass</strong><em>Telecom</em></span>
+      </a>
+      <h1 class="section-title" style="font-size:24px;text-align:center;">Espace administrateur</h1>
+      <p class="muted" style="text-align:center;margin:6px 0 22px;">Connectez-vous pour gérer la boutique.</p>
+      <form id="loginForm">
+        <label>Nom d'utilisateur
+          <input class="form-input" name="username" type="text" required autocomplete="username" />
+        </label>
+        <label>Mot de passe
+          <input class="form-input" name="password" type="password" required autocomplete="current-password" />
+        </label>
+        <div id="loginError" class="form-error"></div>
+        <button type="submit" class="btn btn-primary btn-block btn-jump btn-lg"><span>Se connecter</span></button>
+      </form>
+      <p class="muted small" style="text-align:center;margin-top:18px;">
+        Compte par défaut : <code>admin / admin123</code>
+      </p>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="admin-shell" id="dashboardView" hidden>
+    <aside class="admin-side">
+      <a href="/" class="brand" data-nav>
+        <span class="brand-mark"><span class="brand-orb"></span></span>
+        <span class="brand-text"><strong>Nass</strong><em>Telecom</em></span>
+      </a>
+      <nav class="side-nav">
+        <button class="side-link active" data-tab="overview">
+          <span class="ico">📊</span> Vue d'ensemble
+        </button>
+        <button class="side-link" data-tab="products">
+          <span class="ico">📦</span> Produits
+        </button>
+        <button class="side-link" data-tab="categories">
+          <span class="ico">🏷️</span> Catégories
+        </button>
+      </nav>
+      <div class="side-foot">
+        <div class="admin-user">
+          <div class="avatar">A</div>
+          <div>
+            <div id="adminName" style="font-weight:600;">admin</div>
+            <div class="muted small">Administrateur</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-block" id="logoutBtn"><span>Se déconnecter</span></button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div>
+          <h1 id="tabTitle">Vue d'ensemble</h1>
+          <p class="muted" id="tabSub">Statistiques de votre boutique.</p>
+        </div>
+        <a href="/" class="btn btn-ghost" data-nav><span>Voir le site</span></a>
+      </header>
+
+      <!-- OVERVIEW -->
+      <div class="tab-panel" id="tab-overview">
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label">Produits</div><div class="stat-value" id="ovProducts">—</div></div>
+          <div class="stat-card"><div class="stat-label">Catégories</div><div class="stat-value" id="ovCats">—</div></div>
+          <div class="stat-card"><div class="stat-label">Stock total</div><div class="stat-value" id="ovStock">—</div></div>
+          <div class="stat-card"><div class="stat-label">Valeur stock</div><div class="stat-value" id="ovValue">—</div></div>
+        </div>
+        <div class="admin-card">
+          <div class="card-head">
+            <h2>Derniers produits ajoutés</h2>
+          </div>
+          <div id="recentList" class="recent-list"></div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="tab-panel" id="tab-products" hidden>
+        <div class="tab-toolbar">
+          <div class="search-wrap" style="flex:1;max-width:360px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="prodSearch" type="search" placeholder="Rechercher un produit…" />
+          </div>
+          <button class="btn btn-primary btn-jump" onclick="openProductForm()"><span>+ Nouveau produit</span></button>
+        </div>
+        <div class="admin-card">
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Produit</th>
+                  <th>Catégorie</th>
+                  <th>Prix</th>
+                  <th>Stock</th>
+                  <th>Statut</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="productsTbody">
+                <tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted);">Chargement…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- CATEGORIES -->
+      <div class="tab-panel" id="tab-categories" hidden>
+        <div class="tab-toolbar">
+          <div></div>
+          <button class="btn btn-primary btn-jump" onclick="openCategoryForm()"><span>+ Nouvelle catégorie</span></button>
+        </div>
+        <div class="admin-card">
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Icône</th>
+                  <th>Nom</th>
+                  <th>Description</th>
+                  <th>Produits</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="categoriesTbody">
+                <tr><td colspan="5" style="text-align:center;padding:30px;color:var(--muted);">Chargement…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- Modal (produits/catégories) -->
+  <div class="admin-modal" id="adminModal" hidden>
+    <div class="admin-modal-inner">
+      <button class="pm-close" onclick="closeAdminModal()">✕</button>
+      <div id="adminModalContent"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>
