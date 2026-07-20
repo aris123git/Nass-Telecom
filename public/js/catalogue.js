@@ -30,7 +30,7 @@
       .map(
         (c) => `
       <div class="filter-chip ${c.slug === currentSlug ? 'active' : ''}" data-slug="${c.slug}">
-        <span>${c.icon || ''} ${escapeHtml(c.name)}</span>
+        <span>${escapeHtml(c.name)}</span>
         <span class="count">${c.product_count || 0}</span>
       </div>`
       )

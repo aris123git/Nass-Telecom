@@ -1,6 +1,8 @@
-/* Nass-Telecom — Application client */
+/* NASS ELECTRO+ — Application client */
 
 const NT = window.NT = {
+  WHATSAPP: '22670777755',
+  SITE_NAME: 'NASS ELECTRO+',
   api: {
     async get(url) {
       const r = await fetch(url, { credentials: 'include' });
@@ -49,21 +51,39 @@ async function safeErr(r) {
   }
 }
 
-/* ---------- Page transition with "jump" ---------- */
+/* ---------- WhatsApp order ---------- */
+function whatsappOrder(product) {
+  const lines = [
+    `Bonjour NASS ELECTRO+,`,
+    ``,
+    `Je souhaite commander :`,
+    `• ${product.name}${product.brand ? ' (' + product.brand + ')' : ''}`,
+    `• Prix : ${NT.fmt.price(product.price)}`,
+    product.category_name ? `• Catégorie : ${product.category_name}` : '',
+    ``,
+    `Merci de me contacter pour la livraison.`,
+  ].filter(Boolean);
+  const url = 'https://wa.me/' + NT.WHATSAPP + '?text=' + encodeURIComponent(lines.join('\n'));
+  window.open(url, '_blank', 'noopener');
+}
+function whatsappOrderById(id) {
+  const p = _ntProductCache.get(Number(id));
+  if (p) whatsappOrder(p);
+  else NT.api.get('/api/products/' + id).then(whatsappOrder).catch((e) => alert(e.message));
+}
+window.whatsappOrderById = whatsappOrderById;
+function whatsappGeneric() {
+  const msg = 'Bonjour NASS ELECTRO+, je souhaite quelques informations.';
+  window.open('https://wa.me/' + NT.WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+}
+window.whatsappOrder = whatsappOrder;
+window.whatsappGeneric = whatsappGeneric;
+
+/* ---------- Page transition ---------- */
 function jumpTo(url) {
-  const btn = event && event.currentTarget;
-  if (btn && btn.classList) {
-    btn.classList.remove('jumping');
-    void btn.offsetWidth;
-    btn.classList.add('jumping');
-  }
   const overlay = document.getElementById('pageTransition');
-  setTimeout(() => {
-    if (overlay) overlay.classList.add('enter');
-  }, 380);
-  setTimeout(() => {
-    window.location.href = url;
-  }, 780);
+  if (overlay) overlay.classList.add('enter');
+  setTimeout(() => { window.location.href = url; }, 380);
 }
 window.jumpTo = jumpTo;
 
@@ -73,18 +93,19 @@ function initNavIntercept() {
     const a = e.target.closest('a[data-nav]');
     if (!a) return;
     const href = a.getAttribute('href');
-    if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) return;
+    if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
     if (a.target === '_blank') return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
     e.preventDefault();
     const overlay = document.getElementById('pageTransition');
     if (overlay) overlay.classList.add('enter');
-    setTimeout(() => { window.location.href = href; }, 520);
+    setTimeout(() => { window.location.href = href; }, 380);
   });
 }
 
-/* ---------- Reveal on scroll ---------- */
+/* Reveal on scroll */
 function initReveal() {
-  const els = document.querySelectorAll('.reveal');
+  const els = document.querySelectorAll('.reveal:not(.visible)');
   if (!('IntersectionObserver' in window)) {
     els.forEach(el => el.classList.add('visible'));
     return;
@@ -92,15 +113,15 @@ function initReveal() {
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
         io.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.1 });
   els.forEach(el => io.observe(el));
 }
 
-/* ---------- Header scroll effect ---------- */
+/* Header scroll effect */
 function initHeader() {
   const header = document.getElementById('siteHeader');
   if (!header) return;
@@ -114,13 +135,12 @@ function initHeader() {
   }
 }
 
-/* ---------- Footer year ---------- */
 function initYear() {
   const el = document.getElementById('year');
   if (el) el.textContent = new Date().getFullYear();
 }
 
-/* ---------- Product card renderer ---------- */
+/* ---------- Product card ---------- */
 function productCard(p) {
   const outOfStock = (p.stock ?? 0) <= 0;
   const hasDiscount = p.old_price && p.old_price > p.price;
@@ -128,7 +148,7 @@ function productCard(p) {
   return `
     <article class="product-card" onclick="openProduct(${p.id})">
       <div class="product-media">
-        ${p.featured ? '<span class="product-badge">Coup de cœur</span>' : hasDiscount ? '<span class="product-badge">Promo</span>' : ''}
+        ${p.featured ? '<span class="product-badge">Coup de cœur</span>' : hasDiscount ? '<span class="product-badge promo">Promo</span>' : ''}
         <img src="${imgSrc}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.src='${defaultProductImage(p.category_slug)}'" />
       </div>
       <div class="product-body">
@@ -167,10 +187,13 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-/* ---------- Product quick-view modal ---------- */
+/* ---------- Product quick view modal ---------- */
+const _ntProductCache = new Map();
+window._ntProductCache = _ntProductCache;
 async function openProduct(id) {
   try {
     const p = await NT.api.get('/api/products/' + id);
+    _ntProductCache.set(p.id, p);
     let modal = document.getElementById('ntProductModal');
     if (!modal) {
       modal = document.createElement('div');
@@ -195,16 +218,20 @@ async function openProduct(id) {
           <span class="product-cat">${escapeHtml(p.category_name || '')}</span>
           <p style="color:var(--muted);margin:10px 0;">${escapeHtml(p.description || '')}</p>
           <div class="product-price" style="flex-direction:row;align-items:baseline;gap:14px;margin:6px 0 14px;">
-            <span class="price-now" style="font-size:26px;">${NT.fmt.price(p.price)}</span>
+            <span class="price-now" style="font-size:28px;">${NT.fmt.price(p.price)}</span>
             ${hasDiscount ? `<span class="price-old">${NT.fmt.price(p.old_price)}</span>` : ''}
           </div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;">
             <span class="${outOfStock ? 'product-out' : 'product-in'}">${outOfStock ? 'Rupture de stock' : `En stock (${p.stock})`}</span>
           </div>
           <div style="margin-top:auto;padding-top:18px;display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="btn btn-primary btn-jump" onclick="alert('Commande envoyée ! Nous vous contactons.')" ${outOfStock ? 'disabled' : ''}><span>Commander</span></button>
+            <button class="btn btn-whatsapp btn-jump" onclick="whatsappOrderById(${p.id})" ${outOfStock ? 'disabled' : ''}>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20.5 3.5A11 11 0 0 0 3.5 17.7L2 22l4.4-1.5A11 11 0 1 0 20.5 3.5zM12 20a8 8 0 0 1-4.1-1.1l-.3-.2-2.6.9.9-2.5-.2-.3A8 8 0 1 1 12 20zm4.6-5.8c-.3-.1-1.5-.7-1.8-.8s-.4-.1-.6.1c-.2.3-.6.8-.8 1s-.3.2-.5.1c-.3-.1-1.1-.4-2-1.3-.8-.7-1.3-1.5-1.4-1.8s0-.4.1-.5c.1-.1.3-.3.4-.5s.2-.3.2-.5-.1-.4-.2-.5c-.1-.1-.6-1.4-.8-1.9s-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.9 1.2 3.1c.1.2 2 3 4.7 4.2 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2c-.1-.1-.3-.2-.6-.3z"/></svg>
+              <span>Commander sur WhatsApp</span>
+            </button>
             <button class="btn btn-ghost" onclick="closeProduct()"><span>Retour</span></button>
           </div>
+          <p class="muted small" style="margin-top:8px;font-size:12px;">📞 +226 70 77 77 55</p>
         </div>
       </div>
     `;
@@ -223,7 +250,7 @@ function closeProduct() {
 window.openProduct = openProduct;
 window.closeProduct = closeProduct;
 
-/* ---------- Auto-jump animation for all .btn-jump ---------- */
+/* Auto-jump animation for all .btn-jump */
 function initButtonJump() {
   document.body.addEventListener('click', (e) => {
     const btn = e.target.closest('.btn-jump');
@@ -235,7 +262,7 @@ function initButtonJump() {
   });
 }
 
-/* ---------- Init on load ---------- */
+/* Init on load */
 document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('page-enter');
   initHeader();
