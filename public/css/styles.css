@@ -100,25 +100,26 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  background: linear-gradient(135deg, #002a63, #0055A4 50%, #E4142B);
+  background: linear-gradient(135deg, #002a63, #0055A4 55%, #4a91d1);
   transform: translateY(100%);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1);
 }
-.page-transition .pt-logo {
-  font-family: 'Sora';
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  font-size: clamp(20px, 3vw, 32px);
-  color: #fff;
+.page-transition .pt-logo,
+.page-transition img {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.3s ease, transform 0.5s ease;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity 0.4s ease, transform 0.5s ease;
+  max-width: 320px;
+  width: 60%;
+  height: auto;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3));
 }
 .page-transition.enter { transform: translateY(0); }
-.page-transition.enter .pt-logo { opacity: 1; transform: translateY(0); }
+.page-transition.enter .pt-logo,
+.page-transition.enter img { opacity: 1; transform: translateY(0) scale(1); }
 
 body.page-enter { animation: pageIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
 @keyframes pageIn {
@@ -159,42 +160,23 @@ body.page-enter { animation: pageIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
   color: var(--text);
 }
 .brand-mark {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #0055A4, #E4142B);
+  background: #ffffff;
   display: inline-grid;
   place-items: center;
-  box-shadow: var(--shadow-color);
-  position: relative;
+  box-shadow: 0 4px 14px rgba(0, 85, 164, 0.20);
+  border: 1.5px solid rgba(0, 85, 164, 0.12);
   overflow: hidden;
-  color: #fff;
-  font-weight: 900;
-  font-size: 18px;
+  padding: 4px;
 }
-.brand-mark::before {
-  content: 'N';
-  font-family: 'Sora';
-  font-weight: 900;
-  font-size: 20px;
-  color: #fff;
-  z-index: 1;
-  position: relative;
+.brand-mark img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
 }
-.brand-orb {
-  position: absolute;
-  width: 60%; height: 60%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5), transparent 70%);
-  animation: orbit 6s linear infinite;
-}
-@keyframes orbit {
-  0% { transform: translate(-25%, -25%); }
-  25% { transform: translate(25%, -25%); }
-  50% { transform: translate(25%, 25%); }
-  75% { transform: translate(-25%, 25%); }
-  100% { transform: translate(-25%, -25%); }
-}
+.brand-orb { display: none; }
 .brand-text {
   display: inline-flex;
   align-items: baseline;
@@ -441,45 +423,39 @@ body.page-enter { animation: pageIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
   border-radius: 24px;
   display: grid;
   place-items: center;
-  padding: 30px;
+  padding: 20px;
   text-align: center;
   backface-visibility: visible;
-  border: 3px solid rgba(255,255,255,0.6);
-  box-shadow: 0 30px 60px rgba(0, 34, 74, 0.25);
+  border: 3px solid rgba(0, 85, 164, 0.15);
+  box-shadow: 0 30px 60px rgba(0, 34, 74, 0.22);
+  background: #ffffff;
+  overflow: hidden;
 }
-/* Front face — blue with logo text */
-.logo-face.front {
-  background: linear-gradient(135deg, #0055A4, #003972);
-  transform: translateZ(120px);
-  color: #fff;
-}
-/* Back face — red */
+.logo-face img { width: 92%; height: auto; display: block; }
+.logo-face.front { transform: translateZ(120px); }
 .logo-face.back {
-  background: linear-gradient(135deg, #E4142B, #b30d1f);
   transform: rotateY(180deg) translateZ(120px);
+  background: linear-gradient(135deg, #0055A4, #003972);
   color: #fff;
 }
-/* Sides */
 .logo-face.left {
-  background: linear-gradient(135deg, #ffffff, #f0f4fb);
-  color: var(--blue);
   transform: rotateY(-90deg) translateZ(120px);
-  border-color: rgba(0, 85, 164, 0.2);
+  background: linear-gradient(180deg, #ffffff, #eaf3fb);
+  color: var(--blue);
 }
 .logo-face.right {
-  background: linear-gradient(135deg, #ffffff, #f0f4fb);
-  color: var(--red);
   transform: rotateY(90deg) translateZ(120px);
-  border-color: rgba(228, 20, 43, 0.2);
+  background: linear-gradient(180deg, #ffffff, #eaf3fb);
+  color: var(--blue);
 }
 .logo-face.top {
-  background: linear-gradient(135deg, #0055A4, #E4142B);
   transform: rotateX(90deg) translateZ(120px);
+  background: linear-gradient(135deg, #0055A4, #4a91d1);
   color: #fff;
 }
 .logo-face.bottom {
-  background: linear-gradient(135deg, #E4142B, #0055A4);
   transform: rotateX(-90deg) translateZ(120px);
+  background: linear-gradient(135deg, #4a91d1, #0055A4);
   color: #fff;
 }
 

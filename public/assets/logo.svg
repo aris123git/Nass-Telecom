@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 340" width="480" height="340" role="img" aria-label="NASS ELECTRO+">
+  <defs>
+    <radialGradient id="ntSphere" cx="0.35" cy="0.35" r="0.85">
+      <stop offset="0%" stop-color="#9dc9ef"/>
+      <stop offset="55%" stop-color="#4a91d1"/>
+      <stop offset="100%" stop-color="#1266a8"/>
+    </radialGradient>
+    <linearGradient id="ntBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0055A4"/>
+      <stop offset="100%" stop-color="#003D75"/>
+    </linearGradient>
+    <clipPath id="ntSphereClip">
+      <circle cx="150" cy="145" r="115"/>
+    </clipPath>
+    <!-- Dot pattern that will be clipped inside the circle -->
+    <pattern id="ntDots" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="7" cy="7" r="4" fill="url(#ntSphere)"/>
+    </pattern>
+  </defs>
+
+  <!-- Halftone sphere: dot grid inside a circle -->
+  <g clip-path="url(#ntSphereClip)">
+    <!-- Base soft glow -->
+    <circle cx="150" cy="145" r="115" fill="#e8f2fb"/>
+    <!-- Dotted pattern -->
+    <rect x="35" y="30" width="230" height="230" fill="url(#ntDots)"/>
+    <!-- Highlight overlay -->
+    <ellipse cx="110" cy="105" rx="80" ry="55" fill="#ffffff" opacity="0.18"/>
+  </g>
+
+  <!-- White pill containing N -->
+  <g>
+    <rect x="230" y="115" width="130" height="76" rx="38" ry="38" fill="#ffffff" stroke="#0055A4" stroke-width="2.5"/>
+    <text x="295" y="170"
+          font-family="Sora, Arial, sans-serif"
+          font-weight="900" font-size="58"
+          text-anchor="middle" fill="url(#ntBlue)"
+          letter-spacing="-1">N</text>
+  </g>
+
+  <!-- E+ -->
+  <text x="380" y="170"
+        font-family="Sora, Arial, sans-serif"
+        font-weight="900" font-size="58"
+        fill="url(#ntBlue)"
+        letter-spacing="-1">E<tspan dx="4" font-size="64">+</tspan></text>
+
+  <!-- Bottom baseline -->
+  <line x1="60" y1="270" x2="420" y2="270" stroke="#0055A4" stroke-width="2"/>
+  <text x="240" y="298"
+        font-family="Sora, Arial, sans-serif"
+        font-weight="800" font-size="28"
+        text-anchor="middle" fill="url(#ntBlue)"
+        letter-spacing="2">NASS ELECTRO<tspan dx="2">+</tspan></text>
+</svg>

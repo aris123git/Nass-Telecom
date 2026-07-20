@@ -43,7 +43,7 @@ app.use((err, _req, res, _next) => {
 
 app.listen(PORT, () => {
   console.log(`\n===============================================`);
-  console.log(` Nass-Telecom démarré sur http://localhost:${PORT}`);
+  console.log(` NASS ELECTRO+ démarré sur http://localhost:${PORT}`);
   console.log(` Boutique  : http://localhost:${PORT}/`);
   console.log(` Admin     : http://localhost:${PORT}/admin`);
   console.log(`===============================================\n`);
