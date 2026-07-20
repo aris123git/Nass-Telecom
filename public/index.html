@@ -44,12 +44,7 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-bg">
-      <div class="blob blob-1"></div>
-      <div class="blob blob-2"></div>
-      <div class="blob blob-3"></div>
-      <div class="grid-lines"></div>
-    </div>
+    <div class="hero-bg"><div class="grid-lines"></div></div>
     <div class="container hero-inner">
       <div class="hero-copy">
         <span class="eyebrow reveal">Livraison rapide • Ouagadougou & Burkina</span>
@@ -78,41 +73,32 @@
         </div>
       </div>
 
-      <!-- 3D rotating NASS ELECTRO+ logo -->
+      <!-- 3D rotating halftone sphere -->
       <div class="hero-visual">
         <div class="stage-3d">
-          <div class="logo-3d" id="logo3d">
-            <div class="logo-face front"><img src="/assets/logo.svg" alt="NASS ELECTRO+" /></div>
-            <div class="logo-face back">
-              <div class="logo-brand">
-                <span class="lb-top">NASS</span>
-                <span class="lb-bottom">ELECTRO<span class="lb-plus">+</span></span>
-                <span class="lb-tag">+226 70 77 77 55</span>
-              </div>
-            </div>
-            <div class="logo-face left"><span class="logo-side-content">N</span></div>
-            <div class="logo-face right"><span class="logo-side-content">+</span></div>
-            <div class="logo-face top"><span class="logo-side-content" style="font-size:56px;">★</span></div>
-            <div class="logo-face bottom"><span class="logo-side-content" style="font-size:56px;">★</span></div>
-          </div>
+          <div class="sphere" id="sphere"></div>
           <div class="floaters">
             <div class="floater f1">
-              <svg viewBox="0 0 40 68" width="34" height="58" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="36" height="64" rx="8"/><rect x="14" y="4" width="12" height="3" rx="1.5" fill="currentColor" opacity=".7"/><circle cx="20" cy="60" r="2"/></svg>
+              <img src="https://images.unsplash.com/photo-1592286927505-1def25115558?auto=format&fit=crop&w=180&h=180&q=80" alt="iPhone" loading="lazy" />
               <span class="label">iPhone</span>
             </div>
             <div class="floater f2">
-              <svg viewBox="0 0 54 74" width="44" height="60" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="50" height="70" rx="6"/><rect x="6" y="6" width="42" height="62" rx="2" opacity=".35"/><circle cx="27" cy="70" r="1.2" fill="currentColor"/></svg>
+              <img src="https://images.unsplash.com/photo-1587033411391-5d9e51cce126?auto=format&fit=crop&w=180&h=180&q=80" alt="iPad" loading="lazy" />
               <span class="label">iPad</span>
             </div>
             <div class="floater f3">
-              <svg viewBox="0 0 66 60" width="52" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="30" height="52" rx="4"/><rect x="34" y="4" width="30" height="52" rx="4"/><line x1="33" y1="8" x2="33" y2="52" opacity=".4"/><rect x="5" y="8" width="24" height="44" rx="2" opacity=".25"/><rect x="37" y="8" width="24" height="44" rx="2" opacity=".25"/></svg>
-              <span class="label">Z Fold</span>
-            </div>
-            <div class="floater f4">
-              <svg viewBox="0 0 42 72" width="34" height="58" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="38" height="68" rx="6"/><circle cx="21" cy="7" r="1.5" fill="currentColor"/><rect x="5" y="12" width="32" height="52" rx="2" opacity=".3"/></svg>
+              <img src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=180&h=180&q=80" alt="Galaxy" loading="lazy" />
               <span class="label">Galaxy</span>
             </div>
+            <div class="floater zfold f4">
+              <div class="zfold-book">
+                <div class="zfold-half left"></div>
+                <div class="zfold-half right"></div>
+              </div>
+              <span class="label">Z Fold</span>
+            </div>
           </div>
+          <div class="sphere-label">NASS ELECTRO<span class="plus">+</span></div>
         </div>
       </div>
     </div>
@@ -124,7 +110,7 @@
     <div class="container">
       <div class="section-head">
         <span class="eyebrow reveal">Explorer</span>
-        <h2 class="section-title reveal">Nos <span class="grad">catégories</span></h2>
+        <h2 class="section-title reveal">Nos <span class="accent">catégories</span></h2>
         <p class="section-sub reveal">Trouvez l'appareil qui vous ressemble.</p>
       </div>
       <div class="cats-grid" id="catsGrid"></div>
@@ -245,6 +231,7 @@
   </a>
 
   <script src="/js/icons.js"></script>
+  <script src="/js/sphere.js"></script>
   <script src="/js/app.js"></script>
   <script src="/js/home.js"></script>
 </body>
