@@ -38,6 +38,11 @@ async function checkAuth() {
 function showLogin() {
   document.getElementById('loginView').hidden = false;
   document.getElementById('dashboardView').hidden = true;
+  // Focalise le champ nom d'utilisateur pour que l'utilisateur puisse taper directement
+  setTimeout(() => {
+    const u = document.getElementById('fUsername');
+    if (u) try { u.focus(); } catch (e) {}
+  }, 60);
 }
 function showDashboard() {
   document.getElementById('loginView').hidden = true;

@@ -46,8 +46,31 @@
 
   window.buildSphere = buildSphere;
 
+  function buildOrbitText(el, text, opts) {
+    const options = Object.assign({ radius: 195, fontSize: 22 }, opts || {});
+    el.innerHTML = '';
+    const chars = text.split('');
+    const step = 360 / chars.length;
+    chars.forEach((ch, i) => {
+      const span = document.createElement('span');
+      span.className = 'orbit-char';
+      if (ch === '+') span.classList.add('plus');
+      if (ch === ' ') {
+        span.innerHTML = '&nbsp;';
+      } else {
+        span.textContent = ch;
+      }
+      span.style.transform =
+        'rotateY(' + (i * step) + 'deg) translateZ(' + options.radius + 'px)';
+      el.appendChild(span);
+    });
+  }
+  window.buildOrbitText = buildOrbitText;
+
   document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById('sphere');
     if (el) buildSphere(el);
+    const orbit = document.getElementById('sphereOrbit');
+    if (orbit) buildOrbitText(orbit, ' NASS ELECTRO+  •  NASS ELECTRO+  •  ');
   });
 })();

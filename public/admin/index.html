@@ -12,7 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="page-transition" id="pageTransition" aria-hidden="true">
+  <!-- Overlay de transition inter-pages, désactivé sur l'admin pour ne pas gêner la saisie -->
+  <div class="page-transition" id="pageTransition" aria-hidden="true" style="display:none;">
     <img src="/assets/logo-white.svg" alt="NASS ELECTRO+" />
   </div>
 
@@ -22,20 +23,22 @@
       <div style="display:grid;place-items:center;margin-bottom:16px;">
         <img src="/assets/logo.svg" alt="NASS ELECTRO+" style="width:220px;height:auto;" />
       </div>
-      <h1 class="section-title" style="font-size:24px;text-align:center;">Espace administrateur</h1>
-      <p class="muted" style="text-align:center;margin:6px 0 22px;">Connectez-vous pour gérer la boutique.</p>
-      <form id="loginForm">
-        <label>Nom d'utilisateur
-          <input class="form-input" name="username" type="text" required autocomplete="username" />
+      <h1 class="c-red" style="font-family:'Sora';font-weight:900;font-size:22px;text-align:center;margin:0 0 6px;">NASS ELECTRO+</h1>
+      <p class="c-blue" style="text-align:center;margin:0 0 22px;font-weight:600;">Espace administrateur</p>
+      <form id="loginForm" autocomplete="on">
+        <label class="c-blue">
+          <span>Nom d'utilisateur</span>
+          <input class="form-input" id="fUsername" name="username" type="text" required autocomplete="username" autocapitalize="none" spellcheck="false" />
         </label>
-        <label>Mot de passe
-          <input class="form-input" name="password" type="password" required autocomplete="current-password" />
+        <label class="c-blue">
+          <span>Mot de passe</span>
+          <input class="form-input" id="fPassword" name="password" type="password" required autocomplete="current-password" />
         </label>
         <div id="loginError" class="form-error"></div>
-        <button type="submit" class="btn btn-primary btn-block btn-jump btn-lg"><span>Se connecter</span></button>
+        <button type="submit" class="btn btn-primary btn-block btn-lg"><span>Se connecter</span></button>
       </form>
-      <p class="muted small" style="text-align:center;margin-top:18px;">
-        Compte par défaut : <code>admin / admin123</code>
+      <p class="c-blue" style="text-align:center;margin-top:18px;font-size:13px;opacity:0.75;">
+        Compte par défaut : admin / admin123
       </p>
     </div>
   </section>

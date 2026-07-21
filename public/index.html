@@ -48,13 +48,9 @@
     <div class="container hero-inner">
       <div class="hero-copy">
         <span class="eyebrow reveal">Livraison rapide • Ouagadougou & Burkina</span>
-        <h1 class="hero-title reveal">
-          La <span class="grad">tech</span> que vous aimez,<br />
-          au <span class="grad">prix</span> que vous méritez.
-        </h1>
-        <p class="hero-sub reveal">
-          Ordinateurs, iPhone, iPad, Samsung Galaxy, Z Fold, écouteurs, accessoires…
-          Commandez en un clic sur <strong>WhatsApp au +226 70 77 77 55</strong>.
+        <h1 class="hero-title reveal c-blue">La tech que vous aimez, au prix que vous méritez.</h1>
+        <p class="hero-sub reveal c-blue">
+          Ordinateurs, iPhone, iPad, Samsung Galaxy, Z Fold, écouteurs, accessoires… Commandez en un clic sur WhatsApp au +226 70 77 77 55.
         </p>
         <div class="hero-cta reveal">
           <button class="btn btn-primary btn-lg btn-jump" onclick="jumpTo('/catalogue.html')">
@@ -73,10 +69,11 @@
         </div>
       </div>
 
-      <!-- 3D rotating halftone sphere -->
+      <!-- 3D rotating halftone sphere with orbiting NASS ELECTRO+ text -->
       <div class="hero-visual">
         <div class="stage-3d">
           <div class="sphere" id="sphere"></div>
+          <div class="sphere-orbit" id="sphereOrbit"></div>
           <div class="floaters">
             <div class="floater f1">
               <img src="https://images.unsplash.com/photo-1592286927505-1def25115558?auto=format&fit=crop&w=180&h=180&q=80" alt="iPhone" loading="lazy" />
@@ -98,7 +95,6 @@
               <span class="label">Z Fold</span>
             </div>
           </div>
-          <div class="sphere-label">NASS ELECTRO<span class="plus">+</span></div>
         </div>
       </div>
     </div>
@@ -110,8 +106,8 @@
     <div class="container">
       <div class="section-head">
         <span class="eyebrow reveal">Explorer</span>
-        <h2 class="section-title reveal">Nos <span class="accent">catégories</span></h2>
-        <p class="section-sub reveal">Trouvez l'appareil qui vous ressemble.</p>
+        <h2 class="section-title reveal c-blue">Nos catégories</h2>
+        <p class="section-sub reveal c-blue">Trouvez l'appareil qui vous ressemble.</p>
       </div>
       <div class="cats-grid" id="catsGrid"></div>
     </div>
@@ -122,8 +118,8 @@
     <div class="container">
       <div class="section-head">
         <span class="eyebrow reveal">Sélection</span>
-        <h2 class="section-title reveal">Produits <span class="grad">phares</span></h2>
-        <p class="section-sub reveal">Passez la souris — chaque produit tourne à 360°.</p>
+        <h2 class="section-title reveal c-blue">Produits phares</h2>
+        <p class="section-sub reveal c-blue">Passez la souris — chaque produit tourne à 360°.</p>
       </div>
       <div class="products-grid" id="featuredGrid"></div>
       <div class="center-cta">
@@ -173,12 +169,12 @@
     <div class="container contact">
       <div class="reveal">
         <span class="eyebrow">Nous parler</span>
-        <h2 class="section-title">Restons <span class="grad">en contact</span></h2>
-        <p>Une question, un devis, un besoin sur mesure ? Écrivez-nous ou passez commande directement sur WhatsApp.</p>
+        <h2 class="section-title c-blue">Restons en contact</h2>
+        <p class="c-blue">Une question, un devis, un besoin sur mesure ? Écrivez-nous ou passez commande directement sur WhatsApp.</p>
         <ul class="contact-list">
           <li><strong>WhatsApp</strong> <a href="https://wa.me/22670777755" target="_blank" rel="noopener" style="color:#25D366;font-weight:700;">+226 70 77 77 55</a></li>
-          <li><strong>Téléphone</strong> +226 70 77 77 55</li>
-          <li><strong>Adresse</strong> Boutique NASS ELECTRO+, Ouagadougou</li>
+          <li><strong>Téléphone</strong> <span class="c-blue">+226 70 77 77 55</span></li>
+          <li><strong>Adresse</strong> <span class="c-blue">Rond point du 2 Octobre vers la Place de la Nation, Ouagadougou</span></li>
         </ul>
         <button class="btn btn-whatsapp btn-lg btn-jump" onclick="whatsappGeneric()" style="margin-top:16px;">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.5 3.5A11 11 0 0 0 3.5 17.7L2 22l4.4-1.5A11 11 0 1 0 20.5 3.5zM12 20a8 8 0 0 1-4.1-1.1l-.3-.2-2.6.9.9-2.5-.2-.3A8 8 0 1 1 12 20z"/></svg>
@@ -203,7 +199,9 @@
           <span class="brand-mark"><img src="/assets/logo-mark.svg" alt="NASS ELECTRO+" /></span>
           <span class="brand-text"><strong>NASS</strong><em>ELECTRO</em><span class="plus">+</span></span>
         </a>
-        <p class="muted" style="margin-top:12px;">La tech pour tous, au meilleur prix.<br/>📞 +226 70 77 77 55</p>
+        <p class="c-blue" style="margin-top:12px;">La tech pour tous, au meilleur prix.</p>
+        <p class="c-blue" style="font-weight:600;">+226 70 77 77 55</p>
+        <p class="c-blue" style="font-size:13px;">Rond point du 2 Octobre — Place de la Nation, Ouagadougou</p>
       </div>
       <div>
         <h4>Boutique</h4>
