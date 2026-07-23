@@ -5,9 +5,17 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
+const db = require('./db');
 const authRoutes = require('./routes/auth');
 const categoriesRoutes = require('./routes/categories');
 const productsRoutes = require('./routes/products');
+
+// Catalogue d'exemple si la base est vide (à supprimer au lancement officiel)
+const productCount = db.prepare('SELECT COUNT(*) AS n FROM products').get().n;
+if (productCount === 0) {
+  console.log('[seed] Base vide — chargement des produits d\'exemple…');
+  require('./seed');
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;

@@ -46,7 +46,7 @@ const PRODUCTS = [
     image_url: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=800&q=80' },
   { cat: 'Téléphones', name: 'Samsung Galaxy Z Fold 5', brand: 'Samsung', price: 1150000, old_price: 1290000, stock: 5, featured: 1,
     description: 'Le smartphone pliable haut de gamme. Écran 7.6" qui se déplie. Multi-tâche puissant.',
-    image_url: 'https://images.unsplash.com/photo-1706026453629-fe4dc9d8f6a3?auto=format&fit=crop&w=800&q=80' },
+    image_url: '/assets/products/galaxy-z-fold.jpg' },
   { cat: 'Téléphones', name: 'Samsung Galaxy Z Flip 5', brand: 'Samsung', price: 650000, stock: 8,
     description: 'Le smartphone pliable compact. Écran externe 3.4", design iconique.',
     image_url: 'https://images.unsplash.com/photo-1691073991470-6df0d9b7ca7b?auto=format&fit=crop&w=800&q=80' },

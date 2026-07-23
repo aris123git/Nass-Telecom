@@ -1,42 +1,35 @@
-/* NASS ELECTRO+ — Halftone 3D sphere generator
-   Génère une sphère 3D constituée de points bleus, comme sur le logo,
-   qui tourne en continu à 360° sur l'axe Y. */
+/* NASS ELECTRO+ — Globe pointillé 3D + texte en trajectoire ∞ */
 
 (function () {
   function buildSphere(el, opts) {
     const options = Object.assign({
       radius: 140,
-      rings: 14,       // nombre d'anneaux de latitude
-      dotsPerRing: 24, // points par anneau
-      dotSize: 10,     // taille de base des points (px)
+      rings: 14,
+      dotsPerRing: 24,
+      dotSize: 10,
     }, opts || {});
 
     const { radius, rings, dotsPerRing, dotSize } = options;
     el.innerHTML = '';
-    // Ajouter un halo lumineux derrière
     const glow = document.createElement('div');
     glow.className = 'sphere-glow';
     el.appendChild(glow);
 
     for (let i = 0; i < rings; i++) {
-      // Latitude de -80° à +80° (évite les pôles trop serrés)
       const lat = -80 + (160 * i) / (rings - 1);
       const latRad = (lat * Math.PI) / 180;
       const y = radius * Math.sin(latRad);
       const ringRadius = radius * Math.cos(latRad);
-      // Densité de points proportionnelle au rayon de l'anneau
       const count = Math.max(6, Math.round((dotsPerRing * ringRadius) / radius));
       for (let j = 0; j < count; j++) {
         const angle = (j * 360) / count;
         const dot = document.createElement('span');
         dot.className = 'dot';
-        // Taille dégressive vers les pôles pour donner du volume
         const size = dotSize * (0.55 + 0.45 * Math.cos(latRad));
         dot.style.width = size + 'px';
         dot.style.height = size + 'px';
         dot.style.marginTop = -size / 2 + 'px';
         dot.style.marginLeft = -size / 2 + 'px';
-        // Placement 3D : on tourne autour de Y puis on translate vers l'anneau
         dot.style.transform =
           'rotateY(' + angle + 'deg) translateZ(' + ringRadius + 'px) translateY(' + y + 'px)';
         el.appendChild(dot);
@@ -46,12 +39,28 @@
 
   window.buildSphere = buildSphere;
 
-  function buildOrbitText(el, text, opts) {
-    const options = Object.assign({ radius: 195, fontSize: 22 }, opts || {});
+  /* Lemniscate de Bernoulli (∞) autour du globe */
+  function lemniscate(t, a) {
+    const s = Math.sin(t);
+    const c = Math.cos(t);
+    const den = 1 + s * s;
+    return {
+      x: (a * c) / den,
+      y: (a * s * c) / den,
+      // légère profondeur pour passer devant / derrière le monde
+      z: Math.sin(t * 2) * (a * 0.22),
+    };
+  }
+
+  function buildInfinityOrbit(el, text, opts) {
+    const options = Object.assign({
+      radius: 210,
+      speed: 0.55, // tours / seconde sur le chemin ∞
+    }, opts || {});
+
     el.innerHTML = '';
-    const chars = text.split('');
-    const step = 360 / chars.length;
-    chars.forEach((ch, i) => {
+    const chars = String(text).split('');
+    const spans = chars.map((ch) => {
       const span = document.createElement('span');
       span.className = 'orbit-char';
       if (ch === '+') span.classList.add('plus');
@@ -60,17 +69,55 @@
       } else {
         span.textContent = ch;
       }
-      span.style.transform =
-        'rotateY(' + (i * step) + 'deg) translateZ(' + options.radius + 'px)';
       el.appendChild(span);
+      return span;
     });
+
+    let raf = 0;
+    let t0 = performance.now();
+
+    function frame(now) {
+      const elapsed = (now - t0) / 1000;
+      const base = elapsed * options.speed * Math.PI * 2;
+      const n = spans.length || 1;
+
+      spans.forEach((span, i) => {
+        // Décale chaque lettre le long du ∞
+        const t = base + (i / n) * Math.PI * 2;
+        const p = lemniscate(t, options.radius);
+        const depth = (p.z + options.radius * 0.22) / (options.radius * 0.44); // 0..1
+        const scale = 0.72 + 0.38 * depth;
+        const opacity = 0.4 + 0.6 * depth;
+        span.style.transform =
+          'translate3d(' + p.x + 'px,' + p.y + 'px,' + p.z + 'px) scale(' + scale + ')';
+        span.style.opacity = String(opacity);
+        span.style.zIndex = String(Math.round(p.z + 200));
+      });
+
+      raf = requestAnimationFrame(frame);
+    }
+
+    raf = requestAnimationFrame(frame);
+
+    return function stop() {
+      cancelAnimationFrame(raf);
+    };
   }
-  window.buildOrbitText = buildOrbitText;
+  window.buildInfinityOrbit = buildInfinityOrbit;
+  // Compat ancien nom
+  window.buildOrbitText = function (el, text, opts) {
+    return buildInfinityOrbit(el, text, opts);
+  };
 
   document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById('sphere');
     if (el) buildSphere(el);
     const orbit = document.getElementById('sphereOrbit');
-    if (orbit) buildOrbitText(orbit, ' NASS ELECTRO+  •  NASS ELECTRO+  •  ');
+    if (orbit) {
+      buildInfinityOrbit(orbit, 'NASS ELECTRO+  •  NASS ELECTRO+  •  ', {
+        radius: 205,
+        speed: 0.42,
+      });
+    }
   });
 })();

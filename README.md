@@ -124,5 +124,6 @@ Tous les endpoints d'écriture requièrent un JWT valide (header `Authorization:
 
 - La base SQLite et les images téléversées sont stockées dans `data/` et `uploads/` (ignorés par git).
 - Au premier démarrage, un compte administrateur est créé automatiquement à partir des variables d'environnement.
-- Pour réinitialiser la base : supprimez `data/nass-telecom.db` puis relancez `npm run seed`.
+- Pour réinitialiser la base : supprimez `data/nass-telecom.db` puis relancez `npm run seed` (ou redémarrez le serveur : seed auto si la base est vide).
+- Les **produits d'exemple** sont un catalogue de démonstration. Au lancement officiel du site, supprimez-les depuis l'administration (ou videz la base).
 - En production : changez `JWT_SECRET` et `ADMIN_PASSWORD`, et servez via un reverse proxy HTTPS.
