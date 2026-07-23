@@ -1,5 +1,17 @@
 /* Admin styles — light theme, blue/red accents */
 
+/* Critique : display:grid dans .admin-modal / .admin-shell écrase [hidden]
+   et laisse un overlay invisible (opacity:0) capturer tous les clics du login. */
+.admin-modal[hidden],
+.admin-shell[hidden],
+.login-shell[hidden],
+.toast[hidden],
+.tab-panel[hidden] {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
 .small { font-size: 12px; }
 
 .form-error {
@@ -10,14 +22,29 @@
   font-weight: 600;
 }
 
-/* Assure la lisibilité des champs du formulaire admin */
-.form-input, .form-select, .form-textarea {
+/* Assure la lisibilité + saisie réelle des champs admin */
+.form-input, .form-select, .form-textarea,
+#loginForm input {
   color: var(--blue) !important;
   background: var(--white) !important;
-  caret-color: var(--red);
+  caret-color: var(--blue) !important;
+  -webkit-text-fill-color: var(--blue) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  position: relative;
+  z-index: 20;
 }
 .form-input::placeholder,
 .form-textarea::placeholder { color: var(--blue-light, #7fb1de); opacity: 0.7; }
+/* Chrome autofill ne doit pas blanchir le texte */
+#loginForm input:-webkit-autofill,
+#loginForm input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--blue) !important;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  transition: background-color 99999s ease-out;
+}
 
 /* Login */
 .login-shell {
@@ -45,10 +72,21 @@
   from { opacity: 0; transform: translateY(20px) scale(0.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
-#loginForm { display: flex; flex-direction: column; gap: 14px; position: relative; z-index: 5; }
-#loginForm label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--blue); font-weight: 700; position: relative; z-index: 5; }
-#loginForm input { font-size: 16px; padding: 14px 16px; border: 2px solid var(--border); position: relative; z-index: 5; }
-#loginForm input:focus { border-color: var(--blue); }
+.login-shell { z-index: 1; }
+.login-card { z-index: 2; isolation: isolate; }
+#loginForm { display: flex; flex-direction: column; gap: 14px; position: relative; z-index: 10; }
+#loginForm .field { display: flex; flex-direction: column; gap: 6px; position: relative; z-index: 10; }
+#loginForm label { font-size: 13px; color: var(--blue); font-weight: 700; }
+#loginForm input {
+  font-size: 16px;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  width: 100%;
+  min-height: 52px;
+  box-sizing: border-box;
+}
+#loginForm input:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(0, 85, 164, 0.18); }
+#loginForm button[type="submit"] { position: relative; z-index: 10; pointer-events: auto; }
 
 .admin-shell {
   display: grid;
@@ -281,9 +319,13 @@
   place-items: center;
   padding: 20px;
   opacity: 0;
+  pointer-events: none;
   transition: opacity var(--transition);
 }
-.admin-modal:not([hidden]) { opacity: 1; }
+.admin-modal:not([hidden]) {
+  opacity: 1;
+  pointer-events: auto;
+}
 .admin-modal-inner {
   position: relative;
   background: #ffffff;

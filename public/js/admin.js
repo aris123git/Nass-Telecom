@@ -36,13 +36,27 @@ async function checkAuth() {
   }
 }
 function showLogin() {
-  document.getElementById('loginView').hidden = false;
-  document.getElementById('dashboardView').hidden = true;
-  // Focalise le champ nom d'utilisateur pour que l'utilisateur puisse taper directement
+  const login = document.getElementById('loginView');
+  const dash = document.getElementById('dashboardView');
+  login.hidden = false;
+  dash.hidden = true;
+  // S'assurer qu'aucune modale ne bloque la saisie
+  const modal = document.getElementById('adminModal');
+  if (modal) {
+    modal.hidden = true;
+    modal.style.pointerEvents = 'none';
+  }
   setTimeout(() => {
     const u = document.getElementById('fUsername');
-    if (u) try { u.focus(); } catch (e) {}
-  }, 60);
+    if (u) {
+      try {
+        u.focus({ preventScroll: false });
+        u.select?.();
+      } catch (e) {
+        try { u.focus(); } catch (_) {}
+      }
+    }
+  }, 80);
 }
 function showDashboard() {
   document.getElementById('loginView').hidden = true;

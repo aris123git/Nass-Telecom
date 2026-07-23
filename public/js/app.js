@@ -268,8 +268,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeader();
   initYear();
   initReveal();
-  initNavIntercept();
-  initButtonJump();
+  if (!window.__NT_ADMIN_PAGE__) {
+    initNavIntercept();
+    initButtonJump();
+  }
 });
 
 /* Hide overlay if we came back via bfcache */

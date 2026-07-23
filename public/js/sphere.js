@@ -116,7 +116,7 @@
     if (orbit) {
       buildInfinityOrbit(orbit, 'NASS ELECTRO+  •  NASS ELECTRO+  •  ', {
         radius: 205,
-        speed: 0.42,
+        speed: 0.14, // plus lent — ~1 tour ∞ toutes les ~7s
       });
     }
   });

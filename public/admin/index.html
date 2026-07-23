@@ -12,10 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <!-- Overlay de transition inter-pages, désactivé sur l'admin pour ne pas gêner la saisie -->
-  <div class="page-transition" id="pageTransition" aria-hidden="true" style="display:none;">
-    <img src="/assets/logo-white.svg" alt="NASS ELECTRO+" />
-  </div>
+  <!-- Overlay de transition désactivé sur l'admin (ne doit jamais bloquer la saisie) -->
+  <!-- intentionally omitted -->
 
   <!-- LOGIN -->
   <section class="login-shell" id="loginView">
@@ -26,19 +24,19 @@
       <h1 class="c-blue" style="font-family:'Sora';font-weight:900;font-size:22px;text-align:center;margin:0 0 6px;">NASS ELECTRO+</h1>
       <p class="c-blue" style="text-align:center;margin:0 0 22px;font-weight:600;">Espace administrateur</p>
       <form id="loginForm" autocomplete="on">
-        <label class="c-blue">
-          <span>Nom d'utilisateur</span>
-          <input class="form-input" id="fUsername" name="username" type="text" required autocomplete="username" autocapitalize="none" spellcheck="false" />
-        </label>
-        <label class="c-blue">
-          <span>Mot de passe</span>
-          <input class="form-input" id="fPassword" name="password" type="password" required autocomplete="current-password" />
-        </label>
-        <div id="loginError" class="form-error"></div>
-        <button type="submit" class="btn btn-primary btn-block btn-lg"><span>Se connecter</span></button>
+        <div class="field">
+          <label class="c-blue" for="fUsername">Nom d'utilisateur</label>
+          <input class="form-input" id="fUsername" name="username" type="text" required autocomplete="username" autocapitalize="none" spellcheck="false" inputmode="text" tabindex="1" />
+        </div>
+        <div class="field">
+          <label class="c-blue" for="fPassword">Mot de passe</label>
+          <input class="form-input" id="fPassword" name="password" type="password" required autocomplete="current-password" tabindex="2" />
+        </div>
+        <div id="loginError" class="form-error" role="alert"></div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="3"><span>Se connecter</span></button>
       </form>
       <p class="c-blue" style="text-align:center;margin-top:18px;font-size:13px;opacity:0.75;">
-        Compte par défaut : admin / admin123
+        Compte par défaut : <strong>admin</strong> / <strong>admin123</strong>
       </p>
     </div>
   </section>
@@ -167,6 +165,10 @@
   <!-- Toast -->
   <div id="toast" class="toast" hidden></div>
 
+  <script>
+    /* Sur l'admin : pas de transitions de page, pas d'interception de navigation */
+    window.__NT_ADMIN_PAGE__ = true;
+  </script>
   <script src="/js/app.js"></script>
   <script src="/js/admin.js"></script>
 </body>
