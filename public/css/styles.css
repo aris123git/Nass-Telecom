@@ -156,7 +156,7 @@ body.page-enter { animation: pageIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
   font-family: 'Sora';
   font-size: 18px;
   font-weight: 900;
-  color: var(--red);
+  color: var(--blue);
 }
 .brand-mark {
   width: 44px;
@@ -174,12 +174,13 @@ body.page-enter { animation: pageIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .brand-text {
   display: inline-flex;
   align-items: baseline;
-  gap: 4px;
+  gap: 0.28em;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
-.brand-text strong { font-weight: 900; color: var(--red); }
-.brand-text em { font-style: normal; font-weight: 900; color: var(--red); }
-.brand-text .plus { color: var(--red); font-weight: 900; font-size: 1.15em; }
+.brand-text strong { font-weight: 900; color: var(--blue); }
+.brand-text em { font-style: normal; font-weight: 800; color: var(--blue); opacity: 0.92; }
+.brand-text .plus { color: var(--blue); font-weight: 900; font-size: 1.15em; }
 
 .main-nav { display: flex; gap: 6px; }
 .nav-link {
@@ -341,11 +342,34 @@ body.page-enter { animation: pageIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
   border-radius: 50%;
   background: var(--red);
 }
-.hero-title {
+.hero-brand {
+  font-family: 'Sora', sans-serif;
   font-size: clamp(36px, 5.2vw, 64px);
-  line-height: 1.05;
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin: 0 0 12px;
+  color: var(--blue);
+  display: flex;
+  align-items: baseline;
+  gap: 0.28em;
+}
+.hero-brand strong,
+.hero-brand em {
+  font-style: normal;
+  font-weight: 900;
+  color: var(--blue);
+}
+.hero-brand em {
+  font-weight: 800;
+  opacity: 0.9;
+}
+.hero-title {
+  font-size: clamp(28px, 3.8vw, 42px);
+  line-height: 1.12;
   margin-bottom: 18px;
   color: var(--blue);
+  font-weight: 700;
 }
 .hero-title strong, .hero-title .grad, .hero-title .accent { color: inherit; font-weight: 900; }
 .hero-sub {
@@ -422,12 +446,12 @@ body.page-enter { animation: pageIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
   font-weight: 900;
   font-size: 22px;
   letter-spacing: 0.28em;
-  color: var(--red);
+  color: var(--blue);
   white-space: nowrap;
-  display: none; /* remplacé par le texte qui orbite autour de la sphère */
+  display: none;
 }
 .sphere-label .plus {
-  color: var(--red);
+  color: var(--blue);
   font-size: 1.15em;
 }
 
@@ -450,14 +474,14 @@ body.page-enter { animation: pageIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
   font-family: 'Sora', sans-serif;
   font-weight: 900;
   font-size: 24px;
-  color: var(--red);
-  text-shadow: 0 2px 8px rgba(228, 20, 43, 0.35);
+  color: var(--blue);
+  text-shadow: 0 2px 10px rgba(0, 85, 164, 0.35);
   transform-style: preserve-3d;
   white-space: nowrap;
   margin-left: -10px;
   margin-top: -14px;
 }
-.orbit-char.plus { color: var(--red); font-size: 30px; }
+.orbit-char.plus { color: var(--blue); font-size: 30px; }
 
 /* Floating device photos around the sphere */
 .floaters { position: absolute; inset: -60px; pointer-events: none; }

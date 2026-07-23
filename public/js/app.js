@@ -2,7 +2,7 @@
 
 const NT = window.NT = {
   WHATSAPP: '22670777755',
-  SITE_NAME: 'NASS ELECTRO+',
+  SITE_NAME: 'Nass telecom',
   api: {
     async get(url) {
       const r = await fetch(url, { credentials: 'include' });
@@ -54,7 +54,7 @@ async function safeErr(r) {
 /* ---------- WhatsApp order ---------- */
 function whatsappOrder(product) {
   const lines = [
-    `Bonjour NASS ELECTRO+,`,
+    `Bonjour Nass telecom,`,
     ``,
     `Je souhaite commander :`,
     `• ${product.name}${product.brand ? ' (' + product.brand + ')' : ''}`,
@@ -73,7 +73,7 @@ function whatsappOrderById(id) {
 }
 window.whatsappOrderById = whatsappOrderById;
 function whatsappGeneric() {
-  const msg = 'Bonjour NASS ELECTRO+, je souhaite quelques informations.';
+  const msg = 'Bonjour Nass telecom, je souhaite quelques informations.';
   window.open('https://wa.me/' + NT.WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
 }
 window.whatsappOrder = whatsappOrder;
