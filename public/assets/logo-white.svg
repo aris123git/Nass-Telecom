@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 340" width="480" height="340" role="img" aria-label="NASS ELECTRO+">
+  <defs>
+    <clipPath id="ntSphereClip2"><circle cx="150" cy="145" r="115"/></clipPath>
+    <pattern id="ntDotsW" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="7" cy="7" r="4" fill="#ffffff" opacity="0.9"/>
+    </pattern>
+  </defs>
+  <g clip-path="url(#ntSphereClip2)">
+    <circle cx="150" cy="145" r="115" fill="rgba(255,255,255,0.08)"/>
+    <rect x="35" y="30" width="230" height="230" fill="url(#ntDotsW)"/>
+    <ellipse cx="110" cy="105" rx="80" ry="55" fill="#ffffff" opacity="0.20"/>
+  </g>
+  <rect x="230" y="115" width="130" height="76" rx="38" ry="38" fill="#ffffff" stroke="#ffffff" stroke-width="2.5"/>
+  <text x="295" y="170" font-family="Sora, Arial, sans-serif" font-weight="900" font-size="58" text-anchor="middle" fill="#0055A4">N</text>
+  <text x="380" y="170" font-family="Sora, Arial, sans-serif" font-weight="900" font-size="58" fill="#ffffff"><tspan>E</tspan><tspan dx="4" font-size="64">+</tspan></text>
+  <line x1="60" y1="270" x2="420" y2="270" stroke="#ffffff" stroke-width="2"/>
+  <text x="240" y="298" font-family="Sora, Arial, sans-serif" font-weight="800" font-size="28" text-anchor="middle" fill="#ffffff" letter-spacing="2">NASS ELECTRO<tspan dx="2">+</tspan></text>
+</svg>
