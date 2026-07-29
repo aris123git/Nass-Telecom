@@ -71,6 +71,6 @@
     const el = document.getElementById('sphere');
     if (el) buildSphere(el);
     const orbit = document.getElementById('sphereOrbit');
-    if (orbit) buildOrbitText(orbit, ' Nass telecom  •  Nass telecom  •  ');
+    if (orbit) buildOrbitText(orbit, ' Nass électro+  •  Nass électro+  •  ');
   });
 })();
