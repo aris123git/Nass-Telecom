@@ -54,19 +54,36 @@ function showDashboard() {
 
 async function handleLogin(e) {
   e.preventDefault();
+  e.stopPropagation();
   const form = e.target;
-  const username = form.username.value.trim();
-  const password = form.password.value;
+  const btn = form.querySelector('button[type="submit"]');
+  const username = (form.username.value || '').trim();
+  const password = form.password.value || '';
   const errEl = document.getElementById('loginError');
   errEl.textContent = '';
+  if (!username || !password) {
+    errEl.textContent = 'Nom d\'utilisateur et mot de passe requis';
+    return;
+  }
+  if (btn) {
+    btn.disabled = true;
+    btn.setAttribute('aria-busy', 'true');
+  }
   try {
     const res = await NT.api.post('/api/auth/login', { username, password });
-    if (res.token) localStorage.setItem('nt_token', res.token);
+    if (!res || !res.token) throw new Error('Réponse serveur invalide');
+    localStorage.setItem('nt_token', res.token);
     state.user = res.user;
     showDashboard();
     toast('Bienvenue, ' + res.user.username, 'success');
   } catch (err) {
+    console.error('[admin login]', err);
     errEl.textContent = err.message || 'Erreur de connexion';
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.removeAttribute('aria-busy');
+    }
   }
 }
 

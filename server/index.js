@@ -12,6 +12,9 @@ const productsRoutes = require('./routes/products');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Nécessaire derrière Cloudflare / reverse-proxy (cookies Secure, proto https)
+app.set('trust proxy', 1);
+
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));

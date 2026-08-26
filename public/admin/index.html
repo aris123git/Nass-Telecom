@@ -156,10 +156,10 @@
     </main>
   </section>
 
-  <!-- Modal (produits/catégories) -->
-  <div class="admin-modal" id="adminModal" hidden>
-    <div class="admin-modal-inner">
-      <button class="pm-close" onclick="closeAdminModal()">✕</button>
+  <!-- Modal (produits/catégories) — hors du flux jusqu’à ouverture -->
+  <div class="admin-modal" id="adminModal" hidden aria-hidden="true">
+    <div class="admin-modal-inner" role="dialog" aria-modal="true">
+      <button type="button" class="pm-close" onclick="closeAdminModal()" aria-label="Fermer">✕</button>
       <div id="adminModalContent"></div>
     </div>
   </div>

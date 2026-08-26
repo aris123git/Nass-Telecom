@@ -42,18 +42,21 @@
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"><div class="grid-lines"></div></div>
-    <div class="container hero-inner">
+  <!-- HERO — façade boutique en fond -->
+  <section class="hero hero--facade">
+    <div class="hero-bg" aria-hidden="true">
+      <img class="hero-photo" src="/assets/boutique-facade.png" alt="" />
+      <div class="hero-scrim"></div>
+    </div>
+    <div class="container hero-inner hero-inner--overlay">
+      <div class="hero-visual">
+        <div class="stage-3d">
+          <div class="sphere" id="sphere"></div>
+          <div class="sphere-orbit" id="sphereOrbit"></div>
+        </div>
+      </div>
       <div class="hero-copy">
-        <p class="hero-brand reveal" aria-label="Nass telecom">
-          <strong>Nass</strong> <em>telecom</em>
-        </p>
-        <h1 class="hero-title reveal c-blue">La tech que vous aimez, au prix que vous méritez.</h1>
-        <p class="hero-sub reveal c-blue">
-          Ordinateurs, iPhone, iPad, Samsung Galaxy, Z Fold, écouteurs, accessoires… Commandez en un clic sur WhatsApp au +226 70 77 77 55.
-        </p>
+        <h1 class="hero-title reveal">La tech que vous aimez, au prix que vous aimez.</h1>
         <div class="hero-cta reveal">
           <button class="btn btn-primary btn-lg btn-jump" onclick="jumpTo('/catalogue.html')">
             <span>Voir la boutique</span>
@@ -63,40 +66,6 @@
             <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.5 3.5A11 11 0 0 0 3.5 17.7L2 22l4.4-1.5A11 11 0 1 0 20.5 3.5zM12 20a8 8 0 0 1-4.1-1.1l-.3-.2-2.6.9.9-2.5-.2-.3A8 8 0 1 1 12 20zm4.6-5.8c-.3-.1-1.5-.7-1.8-.8s-.4-.1-.6.1c-.2.3-.6.8-.8 1s-.3.2-.5.1c-.3-.1-1.1-.4-2-1.3-.8-.7-1.3-1.5-1.4-1.8s0-.4.1-.5c.1-.1.3-.3.4-.5s.2-.3.2-.5-.1-.4-.2-.5c-.1-.1-.6-1.4-.8-1.9s-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.9 1.2 3.1c.1.2 2 3 4.7 4.2 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2c-.1-.1-.3-.2-.6-.3z"/></svg>
             <span>WhatsApp</span>
           </button>
-        </div>
-        <div class="hero-stats reveal">
-          <div><strong id="statProducts">—</strong><span>Produits</span></div>
-          <div><strong id="statCats">—</strong><span>Catégories</span></div>
-          <div><strong>24/7</strong><span>Support WhatsApp</span></div>
-        </div>
-      </div>
-
-      <!-- Sphère 3D avec Nass telecom en orbite -->
-      <div class="hero-visual">
-        <div class="stage-3d">
-          <div class="sphere" id="sphere"></div>
-          <div class="sphere-orbit" id="sphereOrbit"></div>
-          <div class="floaters">
-            <div class="floater f1">
-              <img src="https://images.unsplash.com/photo-1592286927505-1def25115558?auto=format&fit=crop&w=180&h=180&q=80" alt="iPhone" loading="lazy" />
-              <span class="label">iPhone</span>
-            </div>
-            <div class="floater f2">
-              <img src="https://images.unsplash.com/photo-1587033411391-5d9e51cce126?auto=format&fit=crop&w=180&h=180&q=80" alt="iPad" loading="lazy" />
-              <span class="label">iPad</span>
-            </div>
-            <div class="floater f3">
-              <img src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=180&h=180&q=80" alt="Galaxy" loading="lazy" />
-              <span class="label">Galaxy</span>
-            </div>
-            <div class="floater zfold f4">
-              <div class="zfold-book">
-                <div class="zfold-half left"></div>
-                <div class="zfold-half right"></div>
-              </div>
-              <span class="label">Z Fold</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
