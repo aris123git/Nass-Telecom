@@ -219,10 +219,13 @@ function renderCategories() {
     return;
   }
   tbody.innerHTML = state.categories
-    .map(
-      (c) => `
+    .map((c) => {
+      const iconHtml = c.icon_image
+        ? `<img class="cat-icon-thumb" src="${escapeHtml(c.icon_image)}" alt="" />`
+        : `<span style="font-size:24px;">${c.icon || '📦'}</span>`;
+      return `
     <tr>
-      <td style="font-size:24px;">${c.icon || '📦'}</td>
+      <td>${iconHtml}</td>
       <td><strong>${escapeHtml(c.name)}</strong><div style="color:var(--muted-2);font-size:12px;">/${c.slug}</div></td>
       <td style="color:var(--muted);max-width:340px;">${escapeHtml(c.description || '—')}</td>
       <td>${c.product_count || 0}</td>
@@ -232,8 +235,8 @@ function renderCategories() {
           <button class="icon-btn danger" title="Supprimer" onclick="deleteCategory(${c.id})">🗑️</button>
         </div>
       </td>
-    </tr>`
-    )
+    </tr>`;
+    })
     .join('');
 }
 
@@ -358,17 +361,27 @@ function openCategoryForm(id) {
   state.editingCategory = editing;
   const modal = document.getElementById('adminModal');
   const content = document.getElementById('adminModalContent');
+  const preview = editing && editing.icon_image
+    ? `<div class="icon-preview"><img src="${escapeHtml(editing.icon_image)}" alt="Icône actuelle" /></div>`
+    : '';
   content.innerHTML = `
-    <form class="admin-form" id="categoryForm">
+    <form class="admin-form" id="categoryForm" enctype="multipart/form-data">
       <h2>${editing ? 'Modifier' : 'Nouvelle'} catégorie</h2>
-      <div class="row">
-        <label>Nom
-          <input class="form-input" name="name" required value="${editing ? escapeHtml(editing.name) : ''}" />
-        </label>
-        <label>Icône (emoji)
-          <input class="form-input" name="icon" placeholder="🎧" maxlength="4" value="${editing ? escapeHtml(editing.icon || '') : ''}" />
-        </label>
-      </div>
+      <label>Nom
+        <input class="form-input" name="name" required value="${editing ? escapeHtml(editing.name) : ''}" />
+      </label>
+      <label>Image d'icône (upload)
+        <input class="form-input" name="icon_image" type="file" accept="image/*" />
+      </label>
+      ${preview}
+      ${editing && editing.icon_image ? `
+      <label class="checkbox">
+        <input type="checkbox" name="clear_icon_image" value="1" />
+        Supprimer l'image actuelle
+      </label>` : ''}
+      <label>Emoji de secours (si pas d'image)
+        <input class="form-input" name="icon" placeholder="🎧" maxlength="4" value="${editing ? escapeHtml(editing.icon || '') : ''}" />
+      </label>
       <label>Description
         <textarea class="form-textarea" name="description" rows="3">${editing ? escapeHtml(editing.description || '') : ''}</textarea>
       </label>
@@ -379,24 +392,26 @@ function openCategoryForm(id) {
     </form>
   `;
   modal.hidden = false;
+  modal.setAttribute('aria-hidden', 'false');
   document.getElementById('categoryForm').addEventListener('submit', submitCategoryForm);
 }
 
 async function submitCategoryForm(e) {
   e.preventDefault();
   const form = e.target;
-  const data = {
-    name: form.name.value.trim(),
-    icon: form.icon.value.trim(),
-    description: form.description.value.trim(),
-  };
+  const fd = new FormData(form);
+  if (!form.clear_icon_image || !form.clear_icon_image.checked) {
+    fd.delete('clear_icon_image');
+  } else {
+    fd.set('clear_icon_image', '1');
+  }
   const editing = state.editingCategory;
   try {
     if (editing) {
-      await NT.api.put('/api/categories/' + editing.id, data);
+      await NT.api.put('/api/categories/' + editing.id, fd);
       toast('Catégorie modifiée', 'success');
     } else {
-      await NT.api.post('/api/categories', data);
+      await NT.api.post('/api/categories', fd);
       toast('Catégorie créée', 'success');
     }
     closeAdminModal();
