@@ -51,15 +51,22 @@ db.exec(`
 function ensureAdminUser() {
   const adminUsername = process.env.ADMIN_USERNAME || 'admin';
   const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+  const hash = bcrypt.hashSync(adminPassword, 10);
   const existing = db.prepare('SELECT id FROM users WHERE username = ?').get(adminUsername);
   if (!existing) {
-    const hash = bcrypt.hashSync(adminPassword, 10);
     db.prepare('INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)').run(
       adminUsername,
       hash,
       'admin'
     );
     console.log(`[db] Compte admin créé -> utilisateur: "${adminUsername}"`);
+  } else {
+    // Réaligne le mot de passe sur .env pour éviter les comptes « fantômes » hors sync
+    db.prepare('UPDATE users SET password_hash = ?, role = ? WHERE username = ?').run(
+      hash,
+      'admin',
+      adminUsername
+    );
   }
 }
 

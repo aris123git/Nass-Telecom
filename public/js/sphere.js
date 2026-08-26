@@ -47,7 +47,7 @@
   window.buildSphere = buildSphere;
 
   function buildOrbitText(el, text, opts) {
-    const options = Object.assign({ radius: 195, fontSize: 22 }, opts || {});
+    const options = Object.assign({ radius: 280, fontSize: 96 }, opts || {});
     el.innerHTML = '';
     const chars = text.split('');
     const step = 360 / chars.length;
@@ -71,6 +71,11 @@
     const el = document.getElementById('sphere');
     if (el) buildSphere(el);
     const orbit = document.getElementById('sphereOrbit');
-    if (orbit) buildOrbitText(orbit, ' Nass électro+  •  Nass électro+  •  ');
+    if (orbit) {
+      buildOrbitText(orbit, ' Nass électro+  •  Nass électro+  •  ', {
+        radius: 280,
+        fontSize: 96,
+      });
+    }
   });
 })();

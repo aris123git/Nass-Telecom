@@ -4,16 +4,23 @@ const NT = window.NT = {
   WHATSAPP: '22670777755',
   SITE_NAME: 'Nass telecom',
   api: {
+    _headers(extra = {}) {
+      const headers = { ...extra };
+      const token = localStorage.getItem('nt_token');
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      return headers;
+    },
     async get(url) {
-      const r = await fetch(url, { credentials: 'include' });
+      const r = await fetch(url, {
+        credentials: 'include',
+        headers: this._headers(),
+      });
       if (!r.ok) throw new Error(await safeErr(r));
       return r.json();
     },
     async post(url, body, opts = {}) {
       const isForm = body instanceof FormData;
-      const headers = isForm ? {} : { 'Content-Type': 'application/json' };
-      const token = localStorage.getItem('nt_token');
-      if (token) headers['Authorization'] = 'Bearer ' + token;
+      const headers = this._headers(isForm ? {} : { 'Content-Type': 'application/json' });
       const r = await fetch(url, {
         method: opts.method || 'POST',
         credentials: 'include',
@@ -26,10 +33,11 @@ const NT = window.NT = {
     put(url, body) { return this.post(url, body, { method: 'PUT' }); },
     patch(url, body) { return this.post(url, body, { method: 'PATCH' }); },
     async del(url) {
-      const token = localStorage.getItem('nt_token');
-      const headers = {};
-      if (token) headers['Authorization'] = 'Bearer ' + token;
-      const r = await fetch(url, { method: 'DELETE', credentials: 'include', headers });
+      const r = await fetch(url, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: this._headers(),
+      });
       if (!r.ok) throw new Error(await safeErr(r));
       return r.json();
     },

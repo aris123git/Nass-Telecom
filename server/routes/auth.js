@@ -10,14 +10,17 @@ router.post('/login', (req, res) => {
   if (!username || !password) {
     return res.status(400).json({ error: 'Nom d\'utilisateur et mot de passe requis' });
   }
-  const user = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
+  const user = db.prepare('SELECT * FROM users WHERE username = ?').get(String(username).trim());
   if (!user) return res.status(401).json({ error: 'Identifiants incorrects' });
-  const ok = bcrypt.compareSync(password, user.password_hash);
+  const ok = bcrypt.compareSync(String(password), user.password_hash);
   if (!ok) return res.status(401).json({ error: 'Identifiants incorrects' });
   const token = signToken(user);
+  const secure = req.secure || req.headers['x-forwarded-proto'] === 'https';
   res.cookie('nt_token', token, {
     httpOnly: true,
     sameSite: 'lax',
+    secure,
+    path: '/',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
   res.json({
@@ -27,7 +30,8 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-  res.clearCookie('nt_token');
+  const secure = req.secure || req.headers['x-forwarded-proto'] === 'https';
+  res.clearCookie('nt_token', { path: '/', sameSite: 'lax', secure });
   res.json({ ok: true });
 });
 
