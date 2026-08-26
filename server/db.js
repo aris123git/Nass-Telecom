@@ -25,6 +25,7 @@ db.exec(`
     name TEXT UNIQUE NOT NULL,
     slug TEXT UNIQUE NOT NULL,
     icon TEXT DEFAULT '',
+    icon_image TEXT DEFAULT '',
     description TEXT DEFAULT '',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
@@ -48,6 +49,16 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_products_featured ON products(featured);
 `);
 
+// Migration douce : ajouter icon_image si la table existait déjà sans cette colonne
+try {
+  const cols = db.prepare('PRAGMA table_info(categories)').all().map((c) => c.name);
+  if (!cols.includes('icon_image')) {
+    db.exec(`ALTER TABLE categories ADD COLUMN icon_image TEXT DEFAULT ''`);
+    console.log('[db] Colonne categories.icon_image ajoutée');
+  }
+} catch (e) {
+  console.warn('[db] Migration icon_image:', e.message);
+}
 function ensureAdminUser() {
   const adminUsername = process.env.ADMIN_USERNAME || 'admin';
   const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';

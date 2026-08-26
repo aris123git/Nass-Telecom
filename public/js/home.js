@@ -15,14 +15,19 @@
     const grid = document.getElementById('catsGrid');
     if (grid) {
       grid.innerHTML = cats
-        .map(
-          (cat) => `
+        .map((cat) => {
+          const icon = cat.icon_image
+            ? `<img src="${escapeHtml(cat.icon_image)}" alt="" loading="lazy" />`
+            : cat.icon
+              ? `<span class="cat-emoji">${cat.icon}</span>`
+              : categoryIcon(cat.slug);
+          return `
         <div class="cat-card reveal" onclick="jumpTo('/catalogue.html?cat=${encodeURIComponent(cat.slug)}')">
-          <div class="cat-icon">${categoryIcon(cat.slug)}</div>
+          <div class="cat-icon">${icon}</div>
           <div class="cat-name">${escapeHtml(cat.name)}</div>
           <div class="cat-count">${cat.product_count || 0} produit${(cat.product_count || 0) > 1 ? 's' : ''}</div>
-        </div>`
-        )
+        </div>`;
+        })
         .join('');
     }
 

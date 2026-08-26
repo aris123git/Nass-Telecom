@@ -272,6 +272,28 @@
 .icon-btn:hover { background: rgba(0, 85, 164, 0.10); color: var(--blue); border-color: rgba(0, 85, 164, 0.30); }
 .icon-btn.danger:hover { background: rgba(228, 20, 43, 0.12); border-color: rgba(228, 20, 43, 0.35); color: var(--red); }
 
+.cat-icon-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  display: block;
+}
+.icon-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 8px;
+}
+.icon-preview img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+}
+
 /* [hidden] doit vraiment masquer (display:grid surpassait l’attribut) */
 [hidden] {
   display: none !important;
