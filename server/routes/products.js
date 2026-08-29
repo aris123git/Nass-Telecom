@@ -4,9 +4,17 @@ const fs = require('fs');
 const multer = require('multer');
 const db = require('../db');
 const { requireAdmin } = require('../auth');
+const { saveBackupToDisk } = require('../backup');
 
 const router = express.Router();
 
+function persist() {
+  try {
+    saveBackupToDisk();
+  } catch (e) {
+    console.warn('[backup] save:', e.message);
+  }
+}
 const UPLOAD_DIR = path.join(__dirname, '..', '..', 'uploads');
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
@@ -127,6 +135,7 @@ router.post('/', requireAdmin, upload.single('image'), (req, res) => {
                 FROM products p JOIN categories c ON c.id = p.category_id
                 WHERE p.id = ?`)
       .get(info.lastInsertRowid);
+    persist();
     res.status(201).json(serializeProduct(created));
   } catch (e) {
     console.error(e);
@@ -183,6 +192,7 @@ router.put('/:id', requireAdmin, upload.single('image'), (req, res) => {
               FROM products p JOIN categories c ON c.id = p.category_id
               WHERE p.id = ?`)
     .get(id);
+  persist();
   res.json(serializeProduct(updated));
 });
 
@@ -198,6 +208,7 @@ router.patch('/:id/price', requireAdmin, (req, res) => {
     id
   );
   const updated = db.prepare('SELECT * FROM products WHERE id = ?').get(id);
+  persist();
   res.json(serializeProduct(updated));
 });
 
@@ -206,6 +217,7 @@ router.delete('/:id', requireAdmin, (req, res) => {
   const existing = db.prepare('SELECT * FROM products WHERE id = ?').get(id);
   if (!existing) return res.status(404).json({ error: 'Produit introuvable' });
   db.prepare('DELETE FROM products WHERE id = ?').run(id);
+  persist();
   res.json({ ok: true });
 });
 

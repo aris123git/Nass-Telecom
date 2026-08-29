@@ -110,8 +110,8 @@ function ensureCategory(cat) {
   const existing = db.prepare('SELECT * FROM categories WHERE name = ?').get(cat.name);
   if (existing) return existing;
   const info = db
-    .prepare('INSERT INTO categories (name, slug, icon, description) VALUES (?, ?, ?, ?)')
-    .run(cat.name, slugify(cat.name), cat.icon, cat.description);
+    .prepare('INSERT INTO categories (name, slug, icon, icon_image, description) VALUES (?, ?, ?, ?, ?)')
+    .run(cat.name, slugify(cat.name), cat.icon, '', cat.description);
   return db.prepare('SELECT * FROM categories WHERE id = ?').get(info.lastInsertRowid);
 }
 
@@ -148,3 +148,9 @@ for (const p of PRODUCTS) {
 const total = db.prepare('SELECT COUNT(*) AS n FROM products').get().n;
 const catTotal = db.prepare('SELECT COUNT(*) AS n FROM categories').get().n;
 console.log(`Seed terminé — ${catTotal} catégories, ${total} produits.`);
+try {
+  require('./backup').saveBackupToDisk();
+  console.log('[backup] catalog.json mis à jour après seed');
+} catch (e) {
+  console.warn('[backup] après seed:', e.message);
+}

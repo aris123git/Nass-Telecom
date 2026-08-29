@@ -4,9 +4,17 @@ const fs = require('fs');
 const multer = require('multer');
 const db = require('../db');
 const { requireAdmin } = require('../auth');
+const { saveBackupToDisk } = require('../backup');
 
 const router = express.Router();
 
+function persist() {
+  try {
+    saveBackupToDisk();
+  } catch (e) {
+    console.warn('[backup] save:', e.message);
+  }
+}
 const UPLOAD_DIR = path.join(__dirname, '..', '..', 'uploads');
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
@@ -67,6 +75,7 @@ router.post('/', requireAdmin, upload.single('icon_image'), (req, res) => {
       )
       .run(name.trim(), slug, icon || '', iconImage, description || '');
     const created = db.prepare('SELECT * FROM categories WHERE id = ?').get(info.lastInsertRowid);
+    persist();
     res.status(201).json(created);
   } catch (e) {
     if (String(e.message).includes('UNIQUE')) {
@@ -110,6 +119,7 @@ router.put('/:id', requireAdmin, upload.single('icon_image'), (req, res) => {
       description !== undefined ? description : existing.description,
       id
     );
+    persist();
     res.json(db.prepare('SELECT * FROM categories WHERE id = ?').get(id));
   } catch (e) {
     console.error('[categories PUT]', e);
@@ -122,6 +132,7 @@ router.delete('/:id', requireAdmin, (req, res) => {
   const existing = db.prepare('SELECT * FROM categories WHERE id = ?').get(id);
   if (!existing) return res.status(404).json({ error: 'Catégorie introuvable' });
   db.prepare('DELETE FROM categories WHERE id = ?').run(id);
+  persist();
   res.json({ ok: true });
 });
 

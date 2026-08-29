@@ -452,6 +452,66 @@ window.openCategoryForm = openCategoryForm;
 window.deleteCategory = deleteCategory;
 window.closeAdminModal = closeAdminModal;
 
+/* ---------- Backup ---------- */
+async function exportBackup() {
+  try {
+    const token = localStorage.getItem('nt_token');
+    const r = await fetch('/api/backup/export', {
+      credentials: 'include',
+      headers: token ? { Authorization: 'Bearer ' + token } : {},
+    });
+    if (!r.ok) throw new Error(await safeErr(r));
+    const blob = await r.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'nass-telecom-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('Sauvegarde téléchargée', 'success');
+    refreshBackupStatus();
+  } catch (e) {
+    toast(e.message || 'Export impossible', 'error');
+  }
+}
+
+async function saveBackupOnServer() {
+  try {
+    const res = await NT.api.post('/api/backup/save', {});
+    toast(`Sauvegardé : ${res.categories} cat., ${res.products} prod.`, 'success');
+    refreshBackupStatus();
+  } catch (e) {
+    toast(e.message || 'Erreur', 'error');
+  }
+}
+
+async function importBackupFile(file) {
+  if (!file) return;
+  if (!confirm('Importer cette sauvegarde remplacera TOUT le catalogue actuel. Continuer ?')) return;
+  const fd = new FormData();
+  fd.append('backup', file);
+  try {
+    const res = await NT.api.post('/api/backup/import', fd);
+    toast(`Importé : ${res.categories} cat., ${res.products} prod.`, 'success');
+    await loadAll();
+    refreshBackupStatus();
+  } catch (e) {
+    toast(e.message || 'Import impossible', 'error');
+  }
+}
+
+async function refreshBackupStatus() {
+  const el = document.getElementById('backupStatus');
+  if (!el) return;
+  try {
+    const s = await NT.api.get('/api/backup/status');
+    el.textContent = s.hasDiskBackup
+      ? `Sauvegarde serveur présente — ${s.categories} catégories, ${s.products} produits.`
+      : `Pas encore de sauvegarde serveur — ${s.categories} catégories, ${s.products} produits.`;
+  } catch {
+    el.textContent = '';
+  }
+}
+
 /* ---------- Init ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('loginForm').addEventListener('submit', handleLogin);
@@ -470,5 +530,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 150);
     });
   }
-  checkAuth();
+  const btnExport = document.getElementById('btnExportBackup');
+  const btnSave = document.getElementById('btnSaveBackup');
+  const importFile = document.getElementById('importBackupFile');
+  if (btnExport) btnExport.addEventListener('click', exportBackup);
+  if (btnSave) btnSave.addEventListener('click', saveBackupOnServer);
+  if (importFile) {
+    importFile.addEventListener('change', () => {
+      const f = importFile.files && importFile.files[0];
+      importBackupFile(f).finally(() => { importFile.value = ''; });
+    });
+  }
+  checkAuth().then((ok) => { if (ok) refreshBackupStatus(); });
 });

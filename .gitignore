@@ -5,3 +5,7 @@ uploads/
 .DS_Store
 npm-debug.log*
 *.log
+
+# La sauvegarde catalogue DOIT être versionnée (persistance)
+!backup/
+!backup/**

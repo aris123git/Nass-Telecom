@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node server/index.js",
-    "seed": "node server/seed.js"
+    "seed": "node server/seed.js",
+    "backup": "node -e \"require('./server/backup').saveBackupToDisk(); console.log('OK', require('./server/backup').BACKUP_FILE)\""
   },
   "keywords": [
     "electronics",

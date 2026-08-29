@@ -8,6 +8,8 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const categoriesRoutes = require('./routes/categories');
 const productsRoutes = require('./routes/products');
+const backupRoutes = require('./routes/backup');
+const { restoreIfEmpty, saveBackupToDisk } = require('./backup');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,7 +18,7 @@ const PORT = process.env.PORT || 3000;
 app.set('trust proxy', 1);
 
 app.use(cors({ origin: true, credentials: true }));
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
@@ -25,6 +27,7 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoriesRoutes);
 app.use('/api/products', productsRoutes);
+app.use('/api/backup', backupRoutes);
 
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 app.use(express.static(PUBLIC_DIR));
@@ -43,6 +46,21 @@ app.use((err, _req, res, _next) => {
   console.error('[error]', err);
   res.status(500).json({ error: err.message || 'Erreur serveur' });
 });
+
+// Restaure le catalogue depuis backup/catalog.json si la base est vide
+try {
+  const result = restoreIfEmpty();
+  if (!result.restored) {
+    const { counts } = require('./backup');
+    const c = counts();
+    if (c.categories === 0 && c.products === 0) {
+      require('./seed');
+      try { saveBackupToDisk(); } catch (_) {}
+    }
+  }
+} catch (e) {
+  console.warn('[backup] restauration au démarrage:', e.message);
+}
 
 app.listen(PORT, () => {
   console.log(`\n===============================================`);

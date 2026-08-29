@@ -90,6 +90,26 @@
           <div class="stat-card"><div class="stat-label">Stock total</div><div class="stat-value" id="ovStock">—</div></div>
           <div class="stat-card"><div class="stat-label">Valeur stock</div><div class="stat-value" id="ovValue">—</div></div>
         </div>
+
+        <div class="admin-card" style="margin-bottom:20px;">
+          <div class="card-head">
+            <h2>Sauvegarde du catalogue</h2>
+          </div>
+          <p class="c-blue" style="margin:0 0 14px;opacity:0.85;font-size:14px;">
+            Téléchargez une sauvegarde après chaque modification importante.
+            Sans ça, les données peuvent disparaître si le serveur redémarre.
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+            <button type="button" class="btn btn-primary" id="btnExportBackup"><span>Télécharger la sauvegarde</span></button>
+            <button type="button" class="btn btn-ghost" id="btnSaveBackup"><span>Enregistrer sur le serveur</span></button>
+            <label class="btn btn-ghost" style="cursor:pointer;margin:0;">
+              <span>Importer une sauvegarde</span>
+              <input type="file" id="importBackupFile" accept="application/json,.json" hidden />
+            </label>
+          </div>
+          <p id="backupStatus" class="muted small" style="margin:12px 0 0;"></p>
+        </div>
+
         <div class="admin-card">
           <div class="card-head">
             <h2>Derniers produits ajoutés</h2>
